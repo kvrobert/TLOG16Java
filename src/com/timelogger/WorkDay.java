@@ -59,7 +59,15 @@ public class WorkDay {
     
         return getSumPerDay() - getRequiredMinPerDay();
     }
-    
+
+    public void setRequiredMinPerDay(long requiredMinPerDay) {
+        this.requiredMinPerDay = requiredMinPerDay;
+    }
+
+    public void setActualDay(int year, int month, int day) {
+        this.actualDay = LocalDate.of(year, month, day);
+    }    
+      
     public boolean isSeparatedTime(Task task){
         
         return tasks.stream().filter( i -> i.getEndTime().isAfter(task.getStartTime())  ).count() != 0;              

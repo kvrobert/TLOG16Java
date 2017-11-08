@@ -36,6 +36,11 @@ public class Task {
         this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
         this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
     }
+    
+    public Task(String taskId){
+    
+        this.taskID = taskId;
+    }
 
     public String getTaskID() {
         return taskID;
@@ -56,6 +61,33 @@ public class Task {
     public long getMinPerTask(){
         
         return ChronoUnit.MINUTES.between(startTime, endTime);
+    }
+
+    public void setTaskID(String taskID) {
+        this.taskID = taskID;
+    }
+
+    public void setStartTime(int hour, int minnute) {
+        
+        this.startTime = LocalTime.of(hour, minnute);
+    }
+    
+    public void setStartTime(String startTime) {
+        this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
+    }
+
+    public void setEndTime(int hour, int minnute) {
+        
+        this.endTime = LocalTime.of(hour, minnute);
+    }
+    
+    public void setEndTime(String startTime) {
+        
+        this.endTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
     
     public boolean isValidTaskId(){
