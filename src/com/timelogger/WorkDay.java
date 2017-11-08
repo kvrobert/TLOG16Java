@@ -50,6 +50,10 @@ public class WorkDay {
         if( sumPerDay != 0 ) return sumPerDay;
         return tasks.stream().mapToLong(Task::getMinPerTask).sum();
     }
+
+    public LocalDate getActualDay() {
+        return actualDay;
+    }    
     
     public long getExtraMinPerDay(){
     
@@ -74,6 +78,6 @@ public class WorkDay {
     
     public boolean isWeekDay(){
     
-        return actualDay.getDayOfWeek() == DayOfWeek.SATURDAY || actualDay.getDayOfWeek() == DayOfWeek.SUNDAY; 
+        return actualDay.getDayOfWeek() != DayOfWeek.SATURDAY || actualDay.getDayOfWeek() != DayOfWeek.SUNDAY; 
     }
 }
