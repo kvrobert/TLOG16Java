@@ -18,5 +18,10 @@ public class WorkMonth {
     private long sumPerMonth;
     private long requiredMinPerMonth;
     
+    public WorkMonth(){
+    
+        
+    }
+    
     
 }
