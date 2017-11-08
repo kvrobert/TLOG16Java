@@ -95,8 +95,4 @@ public class Task {
         return taskID.matches("\\d{4}") || taskID.matches("LT-\\d{4}");
     }
     
-    public boolean isMultipleQuarterHour(){
-    
-        return getMinPerTask() % 15 == 0;
-    }
 }

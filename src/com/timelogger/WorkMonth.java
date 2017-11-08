@@ -80,7 +80,7 @@ public class WorkMonth {
         
         if( isSameMonth(workDay) && isNewDate(workDay) ){
         
-            if( workDay.isWeekDay() || isWeekendEnabled ){
+            if( isWeekendEnabled || Util.isWeekDay(workDay) ){
 
                 days.add(workDay);
                 sumPerMonth = 0;
