@@ -1,5 +1,6 @@
 package com.timelogger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public class TimeLogger {
     
-    private List<WorkMonth> months;
+    private List<WorkMonth> months = new ArrayList<>();
 
     public List<WorkMonth> getMonths() {
         return months;

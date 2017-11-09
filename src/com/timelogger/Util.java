@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Util {
     
-    public static LocalTime rounToMultipleQuarterHour( LocalTime startTime, LocalTime endTime ){
+    public static LocalTime roundToMultipleQuarterHour( LocalTime startTime, LocalTime endTime ){
     
         long duration = ChronoUnit.MINUTES.between(startTime, endTime);
         long minutes = duration % 15 < 8 ? duration / 15 * 15 : ( duration / 15 + 1 ) * 15;

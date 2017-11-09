@@ -66,7 +66,10 @@ public class TimeLoggerUI {
     }
 
     private void listMonths() {
-        System.out.println("listMonths");
+        System.out.println("ListMonts....");
+        if( timeLogger.getMonths().size() > 0 ){
+            IntStream.range(0, timeLogger.getMonths().size()).forEach(index -> System.out.println(index+1 + ". " + timeLogger.getMonths().get(index).toString()));
+        }
     }
 
     private void listDays() {
