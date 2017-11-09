@@ -26,7 +26,7 @@ public class Task {
         this.taskID = taskId;
         this.comment = comment;
         this.startTime = LocalTime.of(startHour, startMin);
-        this.startTime = LocalTime.of(endHour, endMin);        
+        this.endTime = LocalTime.of(endHour, endMin);        
     }
     
     public Task(String taskId, String commnet, String startTime, String endTime){
@@ -75,17 +75,26 @@ public class Task {
     public void setStartTime(String startTime) {
         this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
     }
-
+    
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+    
     public void setEndTime(int hour, int minnute) {
         
         this.endTime = LocalTime.of(hour, minnute);
     }
     
-    public void setEndTime(String startTime) {
+    public void setEndTime(String endTime) {
         
-        this.endTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
+        this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
     }
-
+    
+    public void setEndTime(LocalTime endTime) {
+        
+        this.endTime = endTime;
+    }
+    
     public void setComment(String comment) {
         this.comment = comment;
     }
@@ -97,7 +106,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task: " + taskID + " " + comment + " " + startTime + " " + endTime ;
+        return "Task: " + taskID + ", " + comment + ", " + startTime + ", " + endTime ;
     }
     
     
