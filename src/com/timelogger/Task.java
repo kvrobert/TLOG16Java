@@ -94,5 +94,11 @@ public class Task {
     
         return taskID.matches("\\d{4}") || taskID.matches("LT-\\d{4}");
     }
+
+    @Override
+    public String toString() {
+        return "Task: " + taskID + " " + comment + " " + startTime + " " + endTime ;
+    }
+    
     
 }
