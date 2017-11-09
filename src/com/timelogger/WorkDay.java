@@ -103,10 +103,15 @@ public class WorkDay {
         
             tasks.add(task);
             sumPerDay = 0;
-            System.out.println("Added..");
             return;
         }
-        System.out.println("Didn't added..");
         return;            
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "WorkDay: " + actualDay + ", requ: " + requiredMinPerDay + ", sum: " + sumPerDay;
+    }
+    
+    
 }

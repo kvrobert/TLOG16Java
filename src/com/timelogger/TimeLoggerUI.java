@@ -1,5 +1,8 @@
 package com.timelogger;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -108,7 +111,7 @@ public class TimeLoggerUI {
     private void selectTask() {
         
         System.out.println("Chosse a task!");
-        task = workDay.getTasks().get(scanner.nextInt());
+        task = workDay.getTasks().get(scanner.nextInt() -1);
     }
       
     private void listTasks() {
@@ -125,16 +128,44 @@ public class TimeLoggerUI {
     private void addNewMonth() {
         
         System.out.println("Type the date or press enter to use this month (YYYYMM).");
-        String input = scanner.nextLine();
-        if( input == "" ) timeLogger.addMonth(new WorkMonth());
-        if( input.matches("[1-2][0|9]\\d{2}[0-1][0-2]"  ) )timeLogger.addMonth(new WorkMonth(input));
+        String input = scanner.next();
+        if( input.equals("") ) timeLogger.addMonth(new WorkMonth());
+        if( input.matches( "[1-2][0|9][0-9][0-9][01][0-2]" ) ) {
         
+            timeLogger.addMonth(new WorkMonth(input));
+            return;
+        }
+        System.out.println("NINCS HÓ BEVITEL");
     }
 
-    private void addNewDay() {
-     
+    private void addNewDay(boolean isEnabled) {
+        boolean isWeekendEnabled = isEnabled;
+        LocalDate actualDay = null;
+        long requiredMin;
+        listMonths();
+        selectMonth();
+        
+        System.out.println("Type the required minute for the day or press enter for default 7.5 Hour .");
+        int intInput = scanner.nextInt();
+        if( intInput >= 0){
+            requiredMin = intInput == 0 ? 450 : (long) (intInput * 60);
+        }       
+        
+        System.out.println("Type the day or press enter (DD).");
+        int dayInput = scanner.nextInt();
+        if( dayInput > 0 && dayInput < 31 ) {
+            
+            actualDay = dayInput == 0 ? 
+                    LocalDate.now() : LocalDate.of(workMonth.getDate().getYear(), workMonth.getDate().getMonthValue(), dayInput);
+        }
+        workMonth.addWorkDay(new WorkDay(intInput, actualDay), isWeekendEnabled);
     }
-
+    
+    public void addNewDay(){
+    
+        addNewDay(false);
+    }
+    
     private void createNewTask() {
     
     }
