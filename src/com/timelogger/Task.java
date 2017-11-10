@@ -35,6 +35,15 @@ public class Task {
         this.comment = commnet;
         this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
         this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
+        
+    }
+    
+    public Task(String taskId, String comment, LocalTime startTime, LocalTime endtime){
+        
+        this.taskID = taskId;
+        this.comment = comment;
+        this.startTime = startTime;
+        this.endTime = endtime;        
     }
     
     public Task(String taskId){
