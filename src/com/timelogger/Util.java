@@ -19,7 +19,9 @@ public class Util {
     }
 
     public static boolean isMultipleQuarterHour(Task task) {
-        return task.getMinPerTask() % 15 == 0;
+        //return task.getMinPerTask() % 15 == 0;
+        int endT = task.getEndTime() == null ? 0 : task.getEndTime().getMinute() % 15;
+        return task.getStartTime().getMinute() % 15 == 0 && endT == 0;
     }
 
     public static boolean isWeekDay(WorkDay workDay) {
@@ -27,7 +29,8 @@ public class Util {
     }
 
     public static boolean isSeparatedTime(Task task, WorkDay workDay) {
-        return workDay.getTasks().stream().filter((Task i) -> i.getEndTime().isAfter(task.getStartTime())).count() != 0;
+        if ( task.getEndTime() == null ) return false;
+        return workDay.getTasks().stream().filter( i -> i.getEndTime().isBefore(task.getStartTime())).count() == 0;
     }
     
 }

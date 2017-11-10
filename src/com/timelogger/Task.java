@@ -34,7 +34,7 @@ public class Task {
         this.taskID = taskId;
         this.comment = commnet;
         this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
-        this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
+        if ( endTime != null )this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
         
     }
     
@@ -69,7 +69,8 @@ public class Task {
     
     public long getMinPerTask(){
         
-        return ChronoUnit.MINUTES.between(startTime, endTime);
+        if( startTime != null && endTime != null ) return ChronoUnit.MINUTES.between(startTime, endTime);
+        return -1;
     }
 
     public void setTaskID(String taskID) {
@@ -100,7 +101,7 @@ public class Task {
     }
     
     public void setEndTime(LocalTime endTime) {
-        
+        System.out.println("Tasl endTime modifing.......");
         this.endTime = endTime;
     }
     

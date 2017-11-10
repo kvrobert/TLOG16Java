@@ -19,7 +19,7 @@ public class WorkMonth {
     private long sumPerMonth;
     private long requiredMinPerMonth;
     
-    public WorkMonth(){}
+    public WorkMonth(){System.out.println("WM added..");}
     
     public WorkMonth(int year, int month){
         
@@ -29,6 +29,7 @@ public class WorkMonth {
     public WorkMonth(String year, String month){
         
         this.date = YearMonth.of( Integer.parseInt(year), Integer.parseInt(month) );
+       
     }
     
     public WorkMonth(String yearMonth){

@@ -99,12 +99,13 @@ public class WorkDay {
     
     public void addTask(Task task){
     
-        if( Util.isMultipleQuarterHour(task) && !Util.isSeparatedTime(task, this) ){
-        
+        if( Util.isMultipleQuarterHour(task) && !Util.isSeparatedTime(task, this) || tasks.isEmpty()){
+            System.out.println("TASK ADDED");
             tasks.add(task);
             sumPerDay = 0;
             return;
         }
+        System.out.println("TASK NOOOOOT ADDED");
         return;            
     }
 
