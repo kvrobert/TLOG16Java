@@ -77,7 +77,6 @@ public class TimeLoggerUI {
 
     private void listMonths() {
         
-        System.out.println("ListMonts....");
         if( !timeLogger.getMonths().isEmpty() ){
             
             IntStream.range(0, timeLogger.getMonths().size())
@@ -115,7 +114,7 @@ public class TimeLoggerUI {
     private void selectTask() {
         
         System.out.println("Chosse a task!");
-        task = workDay.getTasks().get(scannerInt.nextInt());
+        task = workDay.getTasks().get(scannerInt.nextInt() -1);
     }
       
     private void listTasks() {
@@ -185,20 +184,15 @@ public class TimeLoggerUI {
         listDays();
         selectDay();
         
-        do{
-        System.out.println("Type the task ID in format XXXX or LT-XXXX");
-        input = scannerTxt.nextLine();
-        if( input.matches("\\d{4}||LT-\\d{4}") ) {taskId = input;}
-        else {System.out.println("Wrong task ID.");}
-        }while(taskId.equals("")); 
+        taskId = giveTaskID(taskId); 
         
         System.out.println("Type the task comment, what you do, or press enter for a black field");
         taskComment = scannerTxt.nextLine();
         
         System.out.println("Type the start time of task or press enter for the actual time (HH:MM)");
-        startTime = chooseTime(false);
+        startTime = giveTime(false);
         System.out.println("Type the end time of task or press enter to leave blank (HH:MM)");
-        endTime = chooseTime(true);
+        endTime = giveTime(true);
         
         System.out.println("Workday........." + workDay);
         
@@ -212,7 +206,20 @@ public class TimeLoggerUI {
         
     }
 
-    private LocalTime chooseTime(boolean withNull) {
+    private String giveTaskID(String taskId) {
+        String input = taskId;
+        do{
+            if( input.matches("\\d{4}||LT-\\d{4}") ) {taskId = input; return taskId;}
+            else {
+                System.out.println("Wrong task ID.");
+                System.out.println("Type the task ID in format XXXX or LT-XXXX");
+                input = scannerTxt.nextLine();
+            }
+        }while(taskId.equals(true));
+        return taskId;
+    }
+
+    private LocalTime giveTime(boolean withNull) {
         LocalTime time;
         String startT = scannerTxt.nextLine();
         if( startT.matches("(\\s)||[0-2][0-5]:[0-5][0-9]") ){
@@ -241,12 +248,12 @@ public class TimeLoggerUI {
         if (workDay.getTasks().stream().filter(i -> i.getEndTime() == null).count() > 0) {
             
             workDay.getTasks().stream().filter(i -> i.getEndTime() == null)
-                    .forEach( i -> System.out.println( workDay.getTasks().indexOf(i) + ". " + i.toString()) );
+                    .forEach( i -> System.out.println( workDay.getTasks().indexOf(i) + 1 + ". " + i.toString()) );
             
             selectTask();
             
             System.out.println("Enter the new finish time for the task.");
-            task.setEndTime(chooseTime(false));
+            task.setEndTime(giveTime(false));
             System.out.println("Task was modified\n");
             System.out.println("The new details... " + task.toString());
             
@@ -259,11 +266,55 @@ public class TimeLoggerUI {
     }
 
     private void deleteATask() {
-    
+        
+        System.out.println("Task deletig....");
+        System.out.println("================");
+        listTasks();
+        selectTask();
+        workDay.getTasks().remove(task);
     }
 
     private void modifyATask() {
-    
+        
+        String input;
+        String taskID = "";
+        String taskComm;
+        LocalTime taskStartTime;
+        LocalTime taskEndTime;
+        
+        System.out.println("Task data editing....");
+        System.out.println("=====================");
+        listTasks();
+        selectTask();
+        
+        System.out.println("Type a new ID or press enter to keep it.");
+        input = scannerTxt.nextLine();
+        if( !input.equals("")) { 
+            //taskID = giveTaskID(input); 
+            task.setTaskID(giveTaskID(input));
+        }
+        
+        System.out.println("Type a new comment or press enter to keep it.");
+        input = scannerTxt.nextLine();
+        if( !input.equals("")) { 
+            //taskComm = giveTaskID(taskID);
+            task.setComment(input);
+        }
+        
+        System.out.println("Type a new start time for the task  or press enter to keep it.");
+        taskStartTime = giveTime(true);
+        if( taskStartTime != null ) { 
+            task.setStartTime(taskStartTime);
+        }
+        
+        System.out.println("Type a new end time for the task  or press enter to keep it.");
+        taskEndTime = giveTime(true);
+        if( taskEndTime != null ) { 
+            task.setEndTime(taskEndTime);
+        }
+        
+        
+        
     }
 
     private void statistics() {
