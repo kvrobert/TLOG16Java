@@ -312,13 +312,25 @@ public class TimeLoggerUI {
         if( taskEndTime != null ) { 
             task.setEndTime(taskEndTime);
         }
-        
-        
-        
     }
 
     private void statistics() {
-    
+        
+        System.out.println("Statistics");
+        System.out.println("==========");
+        
+        listMonths();
+        selectMonth();
+        
+        System.out.println("Statistic of the chosen month:\n");
+        System.out.println(workMonth.getDate().toString() + ':');
+        System.out.println("Extra minutes in the month: " + workMonth.getExtraMinPerMonth() +
+                            "\nThe full time in the month: " + workMonth.getSumPerMonth());
+        
+        workMonth.getDays().stream().forEach( i -> System.out.println( i.getActualDay() + 
+                                            ", required day minute: " + i.getRequiredMinPerDay() +
+                                            ", full work time: "  + i.getSumPerDay() +
+                                            ", overtime: " + i.getExtraMinPerDay()));
     }
     
     
