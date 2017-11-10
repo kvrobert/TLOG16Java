@@ -1,12 +1,15 @@
 package com.timelogger;
 
+import com.sun.media.sound.SoftAbstractResampler;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.print.Collation;
 
 /**
  *
@@ -15,7 +18,8 @@ import java.util.stream.IntStream;
 public class TimeLoggerUI {
     
     
-    private Scanner scanner = new Scanner(System.in);    
+    private Scanner scannerInt = new Scanner(System.in);    
+    private Scanner scannerTxt = new Scanner(System.in);    
     private TimeLogger timeLogger;
     private WorkDay workDay;
     private WorkMonth workMonth;
@@ -48,7 +52,7 @@ public class TimeLoggerUI {
     }
     public void selectMenu(){   
         
-        switch(scanner.nextInt())
+        switch(scannerInt.nextInt())
         {
             case 0: exit(); break;
             case 1: listMonths(); break;
@@ -56,7 +60,7 @@ public class TimeLoggerUI {
             case 3: listTasks(); break;
             case 4: addNewMonth(); break;
             case 5: addNewDay(); break;
-            case 6: createNewTask(); break;
+            case 6: addNewTask(); break;
             case 7: finishATask(); break;
             case 8: deleteATask(); break;
             case 9: modifyATask(); break;
@@ -74,13 +78,13 @@ public class TimeLoggerUI {
     private void listMonths() {
         
         System.out.println("ListMonts....");
-        if( timeLogger.getMonths().size() > 0 ){
+        if( !timeLogger.getMonths().isEmpty() ){
             
             IntStream.range(0, timeLogger.getMonths().size())
                     .forEach(index -> System.out.println(index+1 + ". "
                             + timeLogger.getMonths().get(index).toString()));
             return;
-        }
+        }else{System.out.println("Workmonth is EMPTY!");}
     }
 
     private void listDays() {
@@ -99,19 +103,19 @@ public class TimeLoggerUI {
     private void selectMonth() {
         
         System.out.println("Chosse a month!");
-        workMonth = timeLogger.getMonths().get(scanner.nextInt() -1);
+        workMonth = timeLogger.getMonths().get(scannerInt.nextInt() -1);
     }
     
     private void selectDay() {
         
         System.out.println("Chosse a day!");
-        workDay = workMonth.getDays().get(scanner.nextInt() - 1);
+        workDay = workMonth.getDays().get(scannerInt.nextInt() - 1);
     }
     
     private void selectTask() {
         
         System.out.println("Chosse a task!");
-        task = workDay.getTasks().get(scanner.nextInt() -1);
+        task = workDay.getTasks().get(scannerInt.nextInt());
     }
       
     private void listTasks() {
@@ -128,37 +132,41 @@ public class TimeLoggerUI {
     private void addNewMonth() {
         
         System.out.println("Type the date or press enter to use this month (YYYYMM).");
-        String input = scanner.next();
+        String input = scannerTxt.nextLine();
         if( input.equals("") ) timeLogger.addMonth(new WorkMonth());
         if( input.matches( "[1-2][0|9][0-9][0-9][01][0-2]" ) ) {
         
-            timeLogger.addMonth(new WorkMonth(input));
-            return;
+            if( timeLogger != null ) {
+            
+                timeLogger.addMonth(new WorkMonth(input));
+                return;
+            }
         }
         System.out.println("NINCS HÓ BEVITEL");
     }
 
-    private void addNewDay(boolean isEnabled) {
-        boolean isWeekendEnabled = isEnabled;
+    private void addNewDay(boolean weekendEnabled) {
+        boolean isWeekendEnabled = weekendEnabled;
         LocalDate actualDay = null;
         long requiredMin;
         listMonths();
         selectMonth();
         
         System.out.println("Type the required minute for the day or press enter for default 7.5 Hour .");
-        int intInput = scanner.nextInt();
-        if( intInput >= 0){
-            requiredMin = intInput == 0 ? 450 : (long) (intInput * 60);
-        }       
+        String intInput = scannerTxt.nextLine();
+        
+            requiredMin = intInput.equals("")? 450 : Math.abs(Long.parseLong(intInput) * 60);
+               
         
         System.out.println("Type the day or press enter (DD).");
-        int dayInput = scanner.nextInt();
-        if( dayInput > 0 && dayInput < 31 ) {
+        String input = scannerTxt.nextLine();
+        int dayInput = input.equals("") ? 0 : Integer.parseInt(input);
+        if( dayInput >= 0 && dayInput <= 31 ) {
             
             actualDay = dayInput == 0 ? 
                     LocalDate.now() : LocalDate.of(workMonth.getDate().getYear(), workMonth.getDate().getMonthValue(), dayInput);
         }
-        workMonth.addWorkDay(new WorkDay(intInput, actualDay), isWeekendEnabled);
+        if( workMonth != null ) workMonth.addWorkDay(new WorkDay(requiredMin, actualDay), isWeekendEnabled);
     }
     
     public void addNewDay(){
@@ -166,12 +174,88 @@ public class TimeLoggerUI {
         addNewDay(false);
     }
     
-    private void createNewTask() {
-    
+    private void addNewTask() {
+              
+        String taskId = "";
+        String taskComment;
+        LocalTime startTime;
+        LocalTime endTime;
+        String input;
+        
+        listDays();
+        selectDay();
+        
+        do{
+        System.out.println("Type the task ID in format XXXX or LT-XXXX");
+        input = scannerTxt.nextLine();
+        if( input.matches("\\d{4}||LT-\\d{4}") ) {taskId = input;}
+        else {System.out.println("Wrong task ID.");}
+        }while(taskId.equals("")); 
+        
+        System.out.println("Type the task comment, what you do, or press enter for a black field");
+        taskComment = scannerTxt.nextLine();
+        
+        System.out.println("Type the start time of task or press enter for the actual time (HH:MM)");
+        startTime = chooseTime(false);
+        System.out.println("Type the end time of task or press enter to leave blank (HH:MM)");
+        endTime = chooseTime(true);
+        
+        System.out.println("Workday........." + workDay);
+        
+        if( workDay != null ){
+            workDay.addTask(new Task(taskId, taskComment, startTime, endTime));
+            System.out.println("Task's adding....Done.");
+            return;
+        }else{ 
+            System.out.println("Task wasn't added."); 
+        }
+        
+    }
+
+    private LocalTime chooseTime(boolean withNull) {
+        LocalTime time;
+        String startT = scannerTxt.nextLine();
+        if( startT.matches("(\\s)||[0-2][0-5]:[0-5][0-9]") ){
+            if(withNull){
+                time = startT.equals("") ? null : LocalTime.parse(startT);
+                return time;
+            }else{
+                time = startT.equals("") ? LocalTime.now() : LocalTime.parse(startT);
+                return time;
+            }
+        }else{ System.out.println("Wrong time format! Give it in HH:MM format!"); }
+        
+        return null;
     }
 
     private void finishATask() {
-    
+        
+        List<Task> unfinished;
+        int index = 0;
+        int input;
+        listDays();
+        selectDay();
+        
+        System.out.println("The unfinished task...");
+        System.out.println("======================");
+        if (workDay.getTasks().stream().filter(i -> i.getEndTime() == null).count() > 0) {
+            
+            workDay.getTasks().stream().filter(i -> i.getEndTime() == null)
+                    .forEach( i -> System.out.println( workDay.getTasks().indexOf(i) + ". " + i.toString()) );
+            
+            selectTask();
+            
+            System.out.println("Enter the new finish time for the task.");
+            task.setEndTime(chooseTime(false));
+            System.out.println("Task was modified\n");
+            System.out.println("The new details... " + task.toString());
+            
+        }else{
+        
+            System.out.println("You don't have unfinished task.");
+        }
+        
+        
     }
 
     private void deleteATask() {
