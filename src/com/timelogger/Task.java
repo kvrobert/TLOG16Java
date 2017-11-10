@@ -22,32 +22,40 @@ public class Task {
     private String comment;
     
    
-    public Task(String taskId, String comment, LocalTime startTime, LocalTime endtime){
-        
+    public Task(String taskId, String comment, LocalTime startTime, LocalTime endtime) throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
+                    
         this.taskID = taskId;
         this.comment = comment;
         this.startTime = startTime;
-        this.endTime = endtime;        
+        this.endTime = endtime; 
+        if( Util.isTimeNull(this) ) throw  new EmptyTimeFieldException(" time is null " + this.toString() );
+        if( !Util.isCorrectTimeOrder(this) ) throw new NotExpectedTimeOrderException(" The start time must be before the endtime ");
+        if( !isValidTaskId() ) throw new InvalidTaskIdException("Invalid task ID is of " + this.toString() + "task. It must be in 1234 or LT-1234 form");
+        if( this.getTaskID() == null || this.getTaskID().equals("") ) throw new NoTaskIdException();
+        if( !Util.isMultipleQuarterHour(this) ) {
+        
+            this.endTime =  Util.roundToMultipleQuarterHour(this.getStartTime(), this.getEndTime());
+        }
     }
     
-    public Task(String taskId, String comment, int startHour, int startMin, int endHour, int endMin){        
+    public Task(String taskId, String comment, int startHour, int startMin, int endHour, int endMin) throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{        
     
         this( taskId, comment, LocalTime.of(startHour, startMin), LocalTime.of(endHour, endMin));
     }
     
-    public Task(String taskId, String commnet, String startTime, String endTime){
+    public Task(String taskId, String commnet, String startTime, String endTime) throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
         
         this( taskId, commnet, LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME), LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME)  );
         
     }
     
-    public Task(String taskId, String commnet, String startTime){
+    public Task(String taskId, String commnet, String startTime) throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
         
         this( taskId, commnet, LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME), null  );
         
     }
     
-    public Task(String taskId, String commnet, LocalTime startTime){
+    public Task(String taskId, String commnet, LocalTime startTime) throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
         
         this( taskId, commnet, startTime, null  );
         
@@ -80,36 +88,40 @@ public class Task {
         return -1;
     }
 
-    public void setTaskID(String taskID) {
+    public void setTaskID(String taskID) throws InvalidTaskIdException {
         this.taskID = taskID;
+        if( !this.isValidTaskId() ) throw new InvalidTaskIdException("Invalid task ID is of " + this.toString() + "task. It must be in 1234 or LT-1234 form");
     }
 
-    public void setStartTime(int hour, int minnute) {
+    public void setStartTime(LocalTime startTime) throws NotExpectedTimeOrderException {
         
-        this.startTime = LocalTime.of(hour, minnute);
-    }
-    
-    public void setStartTime(String startTime) {
-        this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME);
-    }
-    
-    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
+        if( !Util.isCorrectTimeOrder(this) ) throw new NotExpectedTimeOrderException("The start time must be before the endtime ");
     }
     
-    public void setEndTime(int hour, int minnute) {
+    public void setStartTime(int hour, int minnute) throws NotExpectedTimeOrderException {
+                
+        this.setStartTime(LocalTime.of(hour, minnute));
+    }
+    
+    public void setStartTime(String startTime) throws NotExpectedTimeOrderException {
         
-        this.endTime = LocalTime.of(hour, minnute);
+        this.setStartTime(LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME));
     }
-    
-    public void setEndTime(String endTime) {
-        
-        this.endTime = LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME);
-    }
-    
-    public void setEndTime(LocalTime endTime) {
-        System.out.println("Tasl endTime modifing.......");
+            
+    public void setEndTime(LocalTime endTime) throws NotExpectedTimeOrderException {
         this.endTime = endTime;
+        if( !Util.isCorrectTimeOrder(this) ) throw new NotExpectedTimeOrderException("The start time must be before the endtime ");
+    }
+    
+    public void setEndTime(int hour, int minnute) throws NotExpectedTimeOrderException {
+        
+        this.setEndTime(LocalTime.of(hour, minnute));
+    }
+    
+    public void setEndTime(String endTime) throws NotExpectedTimeOrderException {
+        
+        this.setEndTime(LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME));
     }
     
     public void setComment(String comment) {

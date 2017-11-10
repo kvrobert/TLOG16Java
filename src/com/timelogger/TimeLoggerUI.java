@@ -197,7 +197,8 @@ public class TimeLoggerUI {
         System.out.println("Workday........." + workDay);
         
         if( workDay != null ){
-            workDay.addTask(new Task(taskId, taskComment, startTime, endTime));
+            if( endTime  != null) workDay.addTask(new Task(taskId, taskComment, startTime, endTime));
+            workDay.addTask(new Task(taskId, taskComment, startTime));
             System.out.println("Task's adding....Done.");
             return;
         }else{ 
