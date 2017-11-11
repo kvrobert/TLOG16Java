@@ -106,8 +106,9 @@ public class Task {
         this.setStartTime(LocalTime.of(hour, minnute));
     }
     
-    public void setStartTime(String startTime) throws NotExpectedTimeOrderException {
+    public void setStartTime(String startTime) throws NotExpectedTimeOrderException, EmptyTimeFieldException {
         
+        if( endTime.equals("") ) throw new EmptyTimeFieldException();
         this.setStartTime(LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME));
     }
             
@@ -121,8 +122,9 @@ public class Task {
         this.setEndTime(LocalTime.of(hour, minnute));
     }
     
-    public void setEndTime(String endTime) throws NotExpectedTimeOrderException {
+    public void setEndTime(String endTime) throws NotExpectedTimeOrderException, EmptyTimeFieldException {
         
+        if( endTime.equals("") ) throw new EmptyTimeFieldException();
         this.setEndTime(LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME));
     }
     

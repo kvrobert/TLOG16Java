@@ -47,13 +47,13 @@ public class WorkDay {
         
        long summ = 0;
         if( sumPerDay != 0 ) return sumPerDay;
-       // return tasks.stream().mapToLong( task -> task.getMinPerTask() ).sum();
+       // return tasks.stream().mapToLong( task -> task.getMinPerTask() ).sum();     Exception miatt nem ment....
        for( Task task : tasks )
        {
            summ += task.getMinPerTask();
        }
-       
-       return summ;
+       sumPerDay = summ;
+       return sumPerDay;
     }
 
     public LocalDate getActualDay() {

@@ -19,14 +19,14 @@ public class Util {
         return startTime.plusMinutes(minutes);
     }
 
-    public static boolean isMultipleQuarterHour(Task task) {
+    public static boolean isMultipleQuarterHour(Task task) throws EmptyTimeFieldException {
         return task.getMinPerTask() % 15 == 0;
        /* int endT = task.getEndTime() == null ? 0 : task.getEndTime().getMinute() % 15;
         return task.getStartTime().getMinute() % 15 == 0 && endT == 0;  */
     }
 
     public static boolean isWeekDay(WorkDay workDay) {
-        return workDay.getActualDay().getDayOfWeek() != DayOfWeek.SATURDAY || workDay.getActualDay().getDayOfWeek() != DayOfWeek.SUNDAY;
+        return workDay.getActualDay().getDayOfWeek() != DayOfWeek.SATURDAY && workDay.getActualDay().getDayOfWeek() != DayOfWeek.SUNDAY;
     }
 
     public static boolean isSeparatedTime(Task task, WorkDay workDay) {
