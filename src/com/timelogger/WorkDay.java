@@ -43,10 +43,17 @@ public class WorkDay {
         return requiredMinPerDay;
     }
 
-    public long getSumPerDay() {
+    public long getSumPerDay() throws EmptyTimeFieldException {
         
+       long summ = 0;
         if( sumPerDay != 0 ) return sumPerDay;
-        return tasks.stream().mapToLong(Task::getMinPerTask).sum();
+       // return tasks.stream().mapToLong( task -> task.getMinPerTask() ).sum();
+       for( Task task : tasks )
+       {
+           summ += task.getMinPerTask();
+       }
+       
+       return summ;
     }
 
     public LocalDate getActualDay() {
@@ -57,7 +64,7 @@ public class WorkDay {
         return tasks;
     }
        
-    public long getExtraMinPerDay(){
+    public long getExtraMinPerDay() throws EmptyTimeFieldException{
     
         return getSumPerDay() - getRequiredMinPerDay();
     }
@@ -94,18 +101,14 @@ public class WorkDay {
     public void addTask(Task task) throws NotSeparatedTimesException{
         
         if( Util.isSeparatedTime(task, this) ) { System.out.println(Util.isSeparatedTime(task, this));
-                System.out.println(this.getTasks().size());
                 throw new NotSeparatedTimesException("The start time of " + "" 
                         + "must be after the last task end time" );
         } 
-        
         if( Util.isMultipleQuarterHour(task)){
-            System.out.println("TASK ADDED");
             tasks.add(task);
             sumPerDay = 0;
             return;
         }
-        System.out.println("TASK NOOOOOT ADDED");
         return;            
     }
 

@@ -30,7 +30,7 @@ public class Task {
         this.endTime = endtime; 
         if( Util.isTimeNull(this) ) throw  new EmptyTimeFieldException(" time is null " + this.toString() );
         if( !Util.isCorrectTimeOrder(this) ) throw new NotExpectedTimeOrderException(" The start time must be before the endtime ");
-        if( !this.isValidTaskId() ) throw new InvalidTaskIdException("Invalid task ID is of " + this.toString() + "task. It must be in 1234 or LT-1234 form");
+        if( !isValidTaskId() ) throw new InvalidTaskIdException("Invalid task ID is of " + this.toString() + "task. It must be in 1234 or LT-1234 form");
         if( this.getTaskID() == null || this.getTaskID().equals("") ) throw new NoTaskIdException();
         if( !Util.isMultipleQuarterHour(this) ) {
         
@@ -82,12 +82,10 @@ public class Task {
         return comment;
     }
     
-    public long getMinPerTask() throws EmptyTimeFieldException{
+    public long getMinPerTask(){
         
-        if( startTime == null && endTime == null ) throw new EmptyTimeFieldException();
-            
-        return ChronoUnit.MINUTES.between(startTime, endTime);
-        
+        if( startTime != null && endTime != null ) return ChronoUnit.MINUTES.between(startTime, endTime);
+        return -1;
     }
 
     public void setTaskID(String taskID) throws InvalidTaskIdException {
