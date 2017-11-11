@@ -17,15 +17,15 @@ public class TimeLogger {
     
     public boolean isNewMonth(WorkMonth workMonth){
     
-        return months.stream().filter(i -> i.getDate() == workMonth.getDate()).count() == 0;
+        return months.stream().filter(i -> i.getDate().equals( workMonth.getDate() ) ).count() == 0;
     }
     
-    public void addMonth(WorkMonth workMonth){
+    public void addMonth(WorkMonth workMonth) throws NotNewDateException{
     
         if( isNewMonth(workMonth) ){
         
             months.add(workMonth);
             return;
-        }
+        }else{ throw new NotNewDateException(" The month (" + workMonth.toString() + ") already exists. Give an another."); }
     }
 }

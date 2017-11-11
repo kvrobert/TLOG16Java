@@ -12,8 +12,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Util {
     
-    public static LocalTime roundToMultipleQuarterHour( LocalTime startTime, LocalTime endTime ){
+    public static LocalTime roundToMultipleQuarterHour( LocalTime startTime, LocalTime endTime ) throws EmptyTimeFieldException{
     
+        if( startTime == null || endTime == null ) throw new EmptyTimeFieldException(" Something went wrong. The time fields should be filled. ");
+        
         long duration = ChronoUnit.MINUTES.between(startTime, endTime);
         long minutes = duration % 15 < 8 ? duration / 15 * 15 : ( duration / 15 + 1 ) * 15;
         return startTime.plusMinutes(minutes);
@@ -29,15 +31,16 @@ public class Util {
         return workDay.getActualDay().getDayOfWeek() != DayOfWeek.SATURDAY && workDay.getActualDay().getDayOfWeek() != DayOfWeek.SUNDAY;
     }
 
-    public static boolean isSeparatedTime(Task task, WorkDay workDay) {
+    public static boolean isSeparatedTime(Task task, WorkDay workDay) throws EmptyTimeFieldException {
     //    return workDay.getTasks().stream().filter( i -> i.getEndTime().isAfter(task.getStartTime()) 
     //                    || i.getEndTime().equals(task.getStartTime())  ).count() > 0;
+        if( task.getStartTime() == null ) throw new EmptyTimeFieldException(" Something went wrong. The time fields should be filled. ");
         if( workDay.getTasks().isEmpty() ) return false;
         return workDay.getLastTaskEndTime().isAfter(task.getStartTime());
     }
     
-    public static boolean isCorrectTimeOrder(Task task){
-        if( task.getEndTime() == null ) return true;
+    public static boolean isCorrectTimeOrder(Task task) throws EmptyTimeFieldException{
+        if( task.getEndTime() == null ) throw new EmptyTimeFieldException(" Something went wrong. The time fields should be filled. ");
         return task.getStartTime().isBefore(task.getEndTime());
     }
 
