@@ -1,6 +1,7 @@
 package com.timelogger;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -29,8 +30,10 @@ public class Util {
     }
 
     public static boolean isSeparatedTime(Task task, WorkDay workDay) {
-        if ( task.getEndTime() == null ) return false;
-        return workDay.getTasks().stream().filter( i -> i.getEndTime().isBefore(task.getStartTime())).count() == 0;
+    //    return workDay.getTasks().stream().filter( i -> i.getEndTime().isAfter(task.getStartTime()) 
+    //                    || i.getEndTime().equals(task.getStartTime())  ).count() > 0;
+        if( workDay.getTasks().isEmpty() ) return false;
+        return workDay.getLastTaskEndTime().isAfter(task.getStartTime());
     }
     
     public static boolean isCorrectTimeOrder(Task task){
@@ -40,5 +43,9 @@ public class Util {
 
     static boolean isTimeNull( Task task ) {
         return task.getStartTime() == null || task.getEndTime() == null;      
+    }
+    
+    static  boolean isFutureDay(WorkDay workDay){
+        return workDay.getActualDay().isAfter(LocalDate.now());
     }
 }

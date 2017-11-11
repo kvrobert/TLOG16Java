@@ -1,51 +1,42 @@
 package com.timelogger;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.IsoFields;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import sun.util.calendar.BaseCalendar;
 
 /**
  *
  * @author rkissvincze
  */
 public class WorkDay {
+    
     private List<Task> tasks = new ArrayList<>();
     private long requiredMinPerDay = (long) (7.5 * 60);
     private LocalDate actualDay = LocalDate.now();
     private long sumPerDay;
     
+    
     public WorkDay(){}
     
-    public WorkDay(long requiredMinperDay, LocalDate actualDay){
-    
-        this.requiredMinPerDay = requiredMinperDay;
+    public WorkDay(long reqiredMinPerDay, LocalDate actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
+
+        this.requiredMinPerDay = reqiredMinPerDay;
         this.actualDay = actualDay;
+        
+        if( reqiredMinPerDay < 0 ) throw new NegativeMinutesOfWorkException();
+        if( Util.isFutureDay(this) ) throw new FutureWorkException();
+    }
+       
+    public WorkDay(long requiredMinperDay, int year, int month, int day) throws NegativeMinutesOfWorkException, FutureWorkException{
+            
+        this(requiredMinperDay, LocalDate.of(year, month, day) );
     }
     
-    public WorkDay(long requiredMinperDay, int year, int month, int day){
-    
-        this.requiredMinPerDay = requiredMinperDay;
-        this.actualDay = LocalDate.of(year, month, day);
-    }
-    
-    public WorkDay(String requiredMinperDay, String actualDay){
+    public WorkDay(String requiredMinperDay, String actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
         
-        int year = Integer.parseInt(actualDay.substring(0, 4));
-        int month = Integer.parseInt(actualDay.substring(4, 6));
-        int day = Integer.parseInt(actualDay.substring(6, 8));
-        
-        this.requiredMinPerDay = Long.parseLong(requiredMinperDay);
-        this.actualDay = LocalDate.of(year, month, day);
+        this( Long.parseLong(requiredMinperDay), LocalDate.parse(actualDay, DateTimeFormatter.BASIC_ISO_DATE) );
     }
 
     public long getRequiredMinPerDay() {
@@ -89,17 +80,26 @@ public class WorkDay {
         return null;    // not elegant..yet..
     }    
 
-    public void setRequiredMinPerDay(long requiredMinPerDay) {
+    public void setRequiredMinPerDay(long requiredMinPerDay) throws NegativeMinutesOfWorkException {
+        if( requiredMinPerDay < 0 ) throw new NegativeMinutesOfWorkException("The required daily minute musn't be negative"); 
         this.requiredMinPerDay = requiredMinPerDay;
     }
 
-    public void setActualDay(int year, int month, int day) {
+    public void setActualDay(int year, int month, int day) throws FutureWorkException {
         this.actualDay = LocalDate.of(year, month, day);
+        
+        if( Util.isFutureDay(this) ) throw new FutureWorkException();
     }          
     
-    public void addTask(Task task){
-    
-        if( Util.isMultipleQuarterHour(task) && !Util.isSeparatedTime(task, this) || tasks.isEmpty()){
+    public void addTask(Task task) throws NotSeparatedTimesException{
+        
+        if( Util.isSeparatedTime(task, this) ) { System.out.println(Util.isSeparatedTime(task, this));
+                System.out.println(this.getTasks().size());
+                throw new NotSeparatedTimesException("The start time of " + "" 
+                        + "must be after the last task end time" );
+        } 
+        
+        if( Util.isMultipleQuarterHour(task)){
             System.out.println("TASK ADDED");
             tasks.add(task);
             sumPerDay = 0;
