@@ -56,7 +56,7 @@ public class Task {
         this( taskId, commnet, LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME), LocalTime.parse(endTime, DateTimeFormatter.ISO_TIME)  );        
     }
     
-    public static Task fromStrign(String taskId, String commnet, String startTime, String endTime) 
+    public static Task fromString(String taskId, String commnet, String startTime, String endTime) 
             throws NotExpectedTimeOrderException, EmptyTimeFieldException, NoTaskIdException, InvalidTaskIdException {
         return new Task( taskId, commnet, startTime, endTime );
     }
@@ -67,7 +67,7 @@ public class Task {
         this( taskId, commnet, LocalTime.parse(startTime, DateTimeFormatter.ISO_TIME), null  );        
     }
     
-    public static Task fromStrign( String taskId, String commnet, String startTime ) 
+    public static Task fromString( String taskId, String commnet, String startTime ) 
             throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
         return new Task( taskId, commnet, startTime );
     }
@@ -78,7 +78,7 @@ public class Task {
         this( taskId, commnet, startTime, null  );
     }
     
-    public static Task fromStrignAndLocalDate(String taskId, String commnet, LocalTime startTime) 
+    public static Task fromStringAndLocalDate(String taskId, String commnet, LocalTime startTime) 
             throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException{
         return new Task( taskId, commnet, startTime);
     }

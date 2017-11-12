@@ -21,12 +21,12 @@ public class WorkMonthTest {
     @Test
     public void workDayTest1() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 10);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 =  WorkDay.fromNumbers(420, 2017, 11, 10);
         wd1.addTask(tsk1);
         
-        WorkDay wd2 = new WorkDay(420, 2017, 11, 2);
-        Task tsk2 = new Task("5656", "valami", "08:45", "09:45");
+        WorkDay wd2 = WorkDay.fromNumbers(420, 2017, 11, 2);
+        Task tsk2 = Task.fromString("5656", "valami", "08:45", "09:45");
         wd2.addTask(tsk2);
         WorkMonth wm = new WorkMonth();
         wm.addWorkDay(wd1);
@@ -49,12 +49,12 @@ public class WorkMonthTest {
     @Test
     public void getExtraMinPerMonthTest() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 6);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 =  WorkDay.fromNumbers(420, 2017, 11, 6);
         wd1.addTask(tsk1);
         
-        WorkDay wd2 = new WorkDay(420, 2017, 11, 2);
-        Task tsk2 = new Task("5656", "valami", "08:45", "09:45");
+        WorkDay wd2 = WorkDay.fromNumbers(420, 2017, 11, 2);
+        Task tsk2 =  Task.fromString("5656", "valami", "08:45", "09:45");
         wd2.addTask(tsk2);
         WorkMonth wm = new WorkMonth();
         wm.addWorkDay(wd1);
@@ -77,12 +77,12 @@ public class WorkMonthTest {
     @Test
     public void getRequiredminPerMOnth() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 6);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2017, 11, 6);
         wd1.addTask(tsk1);
         
-        WorkDay wd2 = new WorkDay(420, 2017, 11, 2);
-        Task tsk2 = new Task("5656", "valami", "08:45", "09:45");
+        WorkDay wd2 = WorkDay.fromNumbers(420, 2017, 11, 2);
+        Task tsk2 = Task.fromString("5656", "valami", "08:45", "09:45");
         wd2.addTask(tsk2);
         WorkMonth wm = new WorkMonth();
         wm.addWorkDay(wd1);
@@ -105,8 +105,8 @@ public class WorkMonthTest {
     @Test
     public void getSumPerMonth_getSUmPerMIn() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 8);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2017, 11, 8);
         wd1.addTask(tsk1);
         
         WorkMonth wm = new WorkMonth();
@@ -118,11 +118,11 @@ public class WorkMonthTest {
     @Test
     public void getSumPerMonth_getSUmPerMInWithWeekenEnebled() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2016, 8, 28);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2016, 8, 28);
         wd1.addTask(tsk1);
         
-        WorkMonth wm = new WorkMonth(2016, 8);
+        WorkMonth wm =  WorkMonth.fromNumbers(2016, 8);
         wm.addWorkDay(wd1, true);
         assertEquals(wd1.getSumPerDay(), wm.getSumPerMonth());
         assertTrue(wd1.getSumPerDay() == wm.getSumPerMonth());
@@ -131,19 +131,19 @@ public class WorkMonthTest {
     @Test(expected = WeekendNotEnabledException.class)
     public void getSumPerMonth_getSUmPerMInWithWeekenFalse() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4556", "Helloka", "07:30", "08:45");
-        WorkDay wd1 = new  WorkDay(420, 2016, 8, 28);
+        Task tsk1 = Task.fromString("4556", "Helloka", "07:30", "08:45");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2016, 8, 28);
         wd1.addTask(tsk1);
-        WorkMonth wm = new WorkMonth(2016, 8);
+        WorkMonth wm = WorkMonth.fromNumbers(2016, 8);
         wm.addWorkDay(wd1);
     }
     
     @Test(expected = NotNewDateException.class)
     public void NotNewDateException() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 8);        
-        WorkDay wd2 = new  WorkDay(420, 2017, 11, 8);        
-        WorkMonth wm = new WorkMonth(2017, 11);
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2017, 11, 8);        
+        WorkDay wd2 = WorkDay.fromNumbers(420, 2017, 11, 8);        
+        WorkMonth wm = WorkMonth.fromNumbers(2017, 11);
         wm.addWorkDay(wd1);
         wm.addWorkDay(wd2);
         System.out.println();
@@ -152,9 +152,9 @@ public class WorkMonthTest {
     @Test(expected = NotTheSameMonthException.class)
     public void NotTheSameMonthException () throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        WorkDay wd1 = new  WorkDay(420, 2017, 11, 8);        
-        WorkDay wd2 = new  WorkDay(420, 2017, 10, 10);        
-        WorkMonth wm = new WorkMonth(2017, 11);
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2017, 11, 8);        
+        WorkDay wd2 = WorkDay.fromNumbers(420, 2017, 10, 10);        
+        WorkMonth wm = WorkMonth.fromNumbers(2017, 11);
         wm.addWorkDay(wd1);
         wm.addWorkDay(wd2);
         System.out.println();
@@ -163,30 +163,30 @@ public class WorkMonthTest {
     @Test(expected = EmptyTimeFieldException.class)
     public void emptyTimeFiledException1() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4545");
-        WorkDay wd1 = new  WorkDay(420, 2016, 8, 11);
+        Task tsk1 = Task.fromString("4545");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2016, 8, 11);
         wd1.addTask(tsk1);
-        WorkMonth wm = new WorkMonth(2016, 8);
+        WorkMonth wm = WorkMonth.fromNumbers(2016, 8);
         wm.addWorkDay(wd1);
     }
     
     @Test(expected = EmptyTimeFieldException.class)
     public void emptyTimeFiledException2() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4545", "valami", "15:15");
-        WorkDay wd1 = new  WorkDay(420, 2016, 8, 11);
+        Task tsk1 = Task.fromString("4545", "valami", "15:15");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2016, 8, 11);
         wd1.addTask(tsk1);
-        WorkMonth wm = new WorkMonth(2016, 8);
+        WorkMonth wm = WorkMonth.fromNumbers(2016, 8);
         wm.addWorkDay(wd1);
     }
     
     @Test(expected = EmptyTimeFieldException.class)
     public void emptyTimeFiledException3() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException, NotSeparatedTimesException, WeekendNotEnabledException, com.timelogger.NotNewDateException, com.timelogger.NotTheSameMonthException{
     
-        Task tsk1 = new Task("4545", "valami", "15:15", "16:00");
-        WorkDay wd1 = new  WorkDay(420, 2016, 8, 11);
+        Task tsk1 = Task.fromString("4545", "valami", "15:15", "16:00");
+        WorkDay wd1 = WorkDay.fromNumbers(420, 2016, 8, 11);
         wd1.addTask(tsk1);
-        WorkMonth wm = new WorkMonth(2016, 8);
+        WorkMonth wm = WorkMonth.fromNumbers(2016, 8);
         wm.addWorkDay(wd1);
         tsk1.setEndTime("");
     }

@@ -13,7 +13,14 @@ import org.junit.runners.Suite;
  * @author rkissvincze
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({com.timelogger.Test_TMPTest.class, com.timelogger.TimeLoggerUITest.class, com.timelogger.TaskTest.class, com.timelogger.TimeLoggerTest.class, com.timelogger.UtilTest.class, com.timelogger.WorkDayTest.class, com.timelogger.WorkMonthTest.class})
+
+@Suite.SuiteClasses({com.timelogger.Test_TMPTest.class, 
+    com.timelogger.TimeLoggerUITest.class, 
+    com.timelogger.TaskTest.class, 
+    com.timelogger.TimeLoggerTest.class, 
+    com.timelogger.UtilTest.class, 
+    com.timelogger.WorkDayTest.class, 
+    com.timelogger.WorkMonthTest.class})
 public class TimeloggerSuite {
     
 }

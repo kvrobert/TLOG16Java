@@ -23,7 +23,7 @@ public class TimeLoggerTest {
     @Test
     public void testGetSumPErMonths() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException, WeekendNotEnabledException, NotNewDateException, NotTheSameMonthException {
         
-        Task task1 = new Task("5642", "aaa", 7, 30, 10, 30);
+        Task task1 = Task.fromStringAndIntDate("5642", "aaa", 7, 30, 10, 30);
         WorkDay wd = new WorkDay();
         WorkMonth wm = new WorkMonth();
         wd.addTask(task1);

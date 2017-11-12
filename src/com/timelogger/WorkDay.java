@@ -20,14 +20,18 @@ public class WorkDay {
     
     public WorkDay(){}
     
-    public WorkDay(long reqiredMinPerDay, LocalDate actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
+    private WorkDay(long reqiredMinPerDay, LocalDate actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
         this.requiredMinPerDay = reqiredMinPerDay;
         this.actualDay = actualDay;
         
         if( reqiredMinPerDay < 0 ) throw new NegativeMinutesOfWorkException();
         if( Util.isFutureDay(this) ) throw new FutureWorkException();
     }
-       
+    
+    public static WorkDay fromNumberAndLocalDate(long reqiredMinPerDay, LocalDate actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
+        return new WorkDay( reqiredMinPerDay, actualDay );    
+    }
+      
     private WorkDay(long requiredMinperDay, int year, int month, int day) throws NegativeMinutesOfWorkException, FutureWorkException{            
         this(requiredMinperDay, LocalDate.of(year, month, day) );
     }

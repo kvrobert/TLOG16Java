@@ -25,7 +25,7 @@ public class WorkDayTest {
     @Test
     public void testGetExtraMinutesPerDay() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException {
         
-        Task t1 =  Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
+        Task t1 =  Task.fromString("4545", "Valami task" , "07:30", "08:45");
         WorkDay wd1 = new WorkDay();
         wd1.addTask(t1);
         long exRes = -375;
@@ -35,7 +35,7 @@ public class WorkDayTest {
     
     @Test
     public void testGetExtraMinutesPerDay2() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException {
-        Task t1 =  Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
+        Task t1 =  Task.fromString("4545", "Valami task" , "07:30", "08:45");
         WorkDay wd1 = new WorkDay();        
         long result = wd1.getExtraMinPerDay();
         assertTrue(result < 0);
@@ -44,14 +44,14 @@ public class WorkDayTest {
     
     @Test(expected = NegativeMinutesOfWorkException.class)
     public void setRequiredMinPerDay () throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException {
-        Task t1 =  Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
+        Task t1 =  Task.fromString("4545", "Valami task" , "07:30", "08:45");
         WorkDay wd1 = new WorkDay();   
         wd1.setRequiredMinPerDay(-300);
     }
     
     @Test(expected = NegativeMinutesOfWorkException.class)
     public void setRequiredMinPerDay2 () throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NegativeMinutesOfWorkException, FutureWorkException {
-        Task t1 = Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
+        Task t1 = Task.fromString("4545", "Valami task" , "07:30", "08:45");
         WorkDay wd1 =  WorkDay.fromString("-300", "20151112"); 
         }
     @Test(expected = FutureWorkException.class)
@@ -67,8 +67,8 @@ public class WorkDayTest {
     
     @Test
     public void testGetSumPerDay() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException {
-        Task t1 = Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
-        Task t2 = Task.fromStrign("4545", "Valami task" , "08:45", "09:45");
+        Task t1 = Task.fromString("4545", "Valami task" , "07:30", "08:45");
+        Task t2 = Task.fromString("4545", "Valami task" , "08:45", "09:45");
         WorkDay wd1 = new WorkDay();
         wd1.addTask(t1);
         wd1.addTask(t2);
@@ -87,8 +87,8 @@ public class WorkDayTest {
     
     @Test
     public void endTimeOfLastTask() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException {
-        Task t1 = Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
-        Task t2 = Task.fromStrign("4545", "Valami task" , "09:30", "11:45");
+        Task t1 = Task.fromString("4545", "Valami task" , "07:30", "08:45");
+        Task t2 = Task.fromString("4545", "Valami task" , "09:30", "11:45");
         WorkDay wd1 = new WorkDay();
         wd1.addTask(t1);
         wd1.addTask(t2);
@@ -107,8 +107,8 @@ public class WorkDayTest {
     
     @Test(expected = NotSeparatedTimesException.class)
     public void notSeparatedTimeException1() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException {
-        Task t1 = Task.fromStrign("4545", "Valami task" , "07:30", "08:45");
-        Task t2 = Task.fromStrign("4545", "Valami task" , "08:30", "09:45");
+        Task t1 = Task.fromString("4545", "Valami task" , "07:30", "08:45");
+        Task t2 = Task.fromString("4545", "Valami task" , "08:30", "09:45");
         WorkDay wd1 = new WorkDay();
         wd1.addTask(t1);
         wd1.addTask(t2);
@@ -174,8 +174,8 @@ public class WorkDayTest {
     
     @Test(expected = NotSeparatedTimesException.class)
     public void testNonSeparateTimeEx() throws NotExpectedTimeOrderException, EmptyTimeFieldException, InvalidTaskIdException, InvalidTaskIdException, NoTaskIdException, NotSeparatedTimesException {
-        Task t1 = Task.fromStrign("4545", "Valami task" , "08:45", "09:50");
-        Task t2 = Task.fromStrign("4545", "Valami task" , "08:20", "08:45");
+        Task t1 = Task.fromString("4545", "Valami task" , "08:45", "09:50");
+        Task t2 = Task.fromString("4545", "Valami task" , "08:20", "08:45");
         WorkDay wd1 = new WorkDay();
         wd1.addTask(t1);
         System.out.println("t1: " + t1.toString());

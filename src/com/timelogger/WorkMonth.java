@@ -21,23 +21,31 @@ public class WorkMonth {
     
     public WorkMonth(){}
     
-    public WorkMonth(int year, int month){
-        
+    private WorkMonth(int year, int month){        
         this.date = YearMonth.of(year, month);
     }
     
-    public WorkMonth(String year, String month){
-        
-        this.date = YearMonth.of( Integer.parseInt(year), Integer.parseInt(month) );
-       
+    public static WorkMonth fromNumbers(int year, int month){
+        return new WorkMonth( year, month );
     }
     
-    public WorkMonth(String yearMonth){
-        
+    private WorkMonth(String year, String month){        
+        this.date = YearMonth.of( Integer.parseInt(year), Integer.parseInt(month) );       
+    }
+    
+    public static WorkMonth fromString(String year, String month){
+        return new WorkMonth( year, month );
+    }
+    
+    private WorkMonth(String yearMonth){        
         String year = yearMonth.substring(0, 4);
         String month = yearMonth.substring(4, 6);
         
         this.date = YearMonth.of( Integer.parseInt(year), Integer.parseInt(month) );
+    }
+    
+    public static WorkMonth fromString(String yearMonth ){
+        return new WorkMonth( yearMonth );
     }
 
     public List<WorkDay> getDays() {
