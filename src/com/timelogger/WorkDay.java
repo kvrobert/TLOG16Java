@@ -21,7 +21,6 @@ public class WorkDay {
     public WorkDay(){}
     
     public WorkDay(long reqiredMinPerDay, LocalDate actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
-
         this.requiredMinPerDay = reqiredMinPerDay;
         this.actualDay = actualDay;
         
@@ -29,14 +28,20 @@ public class WorkDay {
         if( Util.isFutureDay(this) ) throw new FutureWorkException();
     }
        
-    public WorkDay(long requiredMinperDay, int year, int month, int day) throws NegativeMinutesOfWorkException, FutureWorkException{
-            
+    private WorkDay(long requiredMinperDay, int year, int month, int day) throws NegativeMinutesOfWorkException, FutureWorkException{            
         this(requiredMinperDay, LocalDate.of(year, month, day) );
     }
+    public static WorkDay fromNumbers( long requiredMinperDay, int year, int month, int day ) throws NegativeMinutesOfWorkException, FutureWorkException{
+        return new WorkDay( requiredMinperDay, year, month, day );
+    }
     
-    public WorkDay(String requiredMinperDay, String actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
+    private WorkDay(String requiredMinperDay, String actualDay) throws NegativeMinutesOfWorkException, FutureWorkException{
         
         this( Long.parseLong(requiredMinperDay), LocalDate.parse(actualDay, DateTimeFormatter.BASIC_ISO_DATE) );
+    }
+    
+    public static WorkDay fromString( String requiredMinperDay, String actualDay ) throws NegativeMinutesOfWorkException, FutureWorkException{
+        return new WorkDay( requiredMinperDay, actualDay );
     }
 
     public long getRequiredMinPerDay() {
@@ -98,7 +103,7 @@ public class WorkDay {
         if( Util.isFutureDay(this) ) throw new FutureWorkException();
     }          
     
-    public void addTask(Task task) throws NotSeparatedTimesException{
+    public void addTask(Task task) throws NotSeparatedTimesException, EmptyTimeFieldException{
         
         if( Util.isSeparatedTime(task, this) ) { System.out.println(Util.isSeparatedTime(task, this));
                 throw new NotSeparatedTimesException("The start time of " + "" 
