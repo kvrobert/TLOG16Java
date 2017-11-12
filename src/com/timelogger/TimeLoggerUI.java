@@ -1,15 +1,11 @@
 package com.timelogger;
 
-import com.sun.media.sound.SoftAbstractResampler;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javafx.print.Collation;
 
 /**
  *
@@ -130,17 +126,19 @@ public class TimeLoggerUI {
 
     private void addNewMonth() {
         
-        System.out.println("Type the date or press enter to use this month (YYYYMM).");
-        String input = scannerTxt.nextLine();
-        if( input.equals("") ) timeLogger.addMonth(new WorkMonth());
-        if( input.matches( "[1-2][0|9][0-9][0-9][01][0-2]" ) ) {
-        
-            if( timeLogger != null ) {
-            
-                timeLogger.addMonth(new WorkMonth(input));
-                return;
+        try{
+            System.out.println("Type the date or press enter to use this month (YYYYMM).");
+            String input = scannerTxt.nextLine();
+            if( input.equals("") ) timeLogger.addMonth(new WorkMonth());
+            if( input.matches( "[1-2][0|9][0-9][0-9][01][0-2]" ) ) {
+
+                if( timeLogger != null ) {
+
+                    timeLogger.addMonth(new WorkMonth(input));
+                    return;
+                }
             }
-        }
+        }catch(Exception ex) { System.out.println(ex.getMessage()); }    
         System.out.println("NINCS HÓ BEVITEL");
     }
 
