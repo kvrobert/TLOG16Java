@@ -83,8 +83,7 @@ public class WorkMonth {
     }
     
     public boolean isNewDate(WorkDay workDay){
-    
-        //return days.stream().filter(i -> i.getActualDay() == workDay.getActualDay()).count() == 0;
+            
         return days.stream().filter(i -> i.getActualDay().equals( workDay.getActualDay() )).count() == 0;
     }
     

@@ -118,7 +118,8 @@ public class Task {
     public void setTaskID(String taskID) throws InvalidTaskIdException {
         this.taskID = taskID;
         if( !this.isValidTaskId() ) 
-            throw new InvalidTaskIdException("Invalid task ID is of " + this.toString() + "task. It must be in 1234 or LT-1234 form");
+            throw new InvalidTaskIdException("Invalid task ID is of " + 
+                    this.toString() + "task. It must be in 1234 or LT-1234 form");
     }
 
     public void setStartTime(LocalTime startTime) 

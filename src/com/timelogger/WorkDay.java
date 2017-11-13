@@ -93,11 +93,13 @@ public class WorkDay {
             }
             return lastTask.getEndTime();
         }    
-        return null;    // not elegant..yet..
+        return null;    // not elegant..yet..  epoch date is better...
     }    
 
-    public void setRequiredMinPerDay(long requiredMinPerDay) throws NegativeMinutesOfWorkException {
-        if( requiredMinPerDay < 0 ) throw new NegativeMinutesOfWorkException("The required daily minute musn't be negative"); 
+    public void setRequiredMinPerDay(long requiredMinPerDay) 
+            throws NegativeMinutesOfWorkException {
+        if( requiredMinPerDay < 0 ) 
+            throw new NegativeMinutesOfWorkException("The required daily minute musn't be negative"); 
         this.requiredMinPerDay = requiredMinPerDay;
     }
 
@@ -117,8 +119,7 @@ public class WorkDay {
             tasks.add(task);
             sumPerDay = 0;
             return;
-        }
-        return;            
+        }         
     }
 
     @Override

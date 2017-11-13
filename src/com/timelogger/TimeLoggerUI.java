@@ -326,7 +326,7 @@ public class TimeLoggerUI {
             System.out.println("Extra minutes in the month: " 
                 + workMonth.getExtraMinPerMonth() +
                     "\nThe full time in the month: " + workMonth.getSumPerMonth());
-
+            
            workMonth.getDays().stream().forEach( i -> 
                     System.out.println( i.getActualDay() + 
                         ", required day minute: " + i.getRequiredMinPerDay() +
